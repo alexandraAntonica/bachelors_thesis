@@ -1,6 +1,6 @@
 Fighting the Resistance: Predicting Antibiotic Susceptibility in Meningitis-Causing Pathogens
 
-\*Abstract\*
+*Abstract*
 
 Antimicrobial resistance (AMR) poses a significant global health threat, endangering
 millions worldwide. In response, machine learning (ML) algorithms have emerged as
