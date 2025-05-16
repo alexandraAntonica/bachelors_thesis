@@ -37,6 +37,7 @@ Once the conda environment is activated and Docker is installed and opened, a do
 
 This experiment consists of multiple steps: preprocessing, training, and visualizations. 
 For data preprocessing, the following bioinformatics tools are used:
+
     Prokka -- to annotate the raw genomic data;
     Panaroo -- to compute and analyze the pan-genome of each bacteria;
     SNP-sites -- to compute the single nucleotide polymorphism, based on the core gene alignenment (computed by Panaroo);
@@ -45,23 +46,21 @@ For data preprocessing, the following bioinformatics tools are used:
     mlst -- to compute the sequence typing;
     RGI -- to construct the target variable. 
 The following .py files need to be run so that the data preprocessing is completed:
+
     pangenome_SP.py -- this file reorganizes the genomes of Streptococcus pneumoniae downloaded from NCBI, uses Prokka to annotate the genomes, and uses  Panaroo to compute and analyze the pan-genome;
     pangenome_SA.py -- this is similar to pangenome_SP.py, performing the same pipeline on genomes of Streptococcus agalactie;
     pangenome_NM.py -- this is similar to pangenome_SP.py, performing the same pipeline on genomes of Neisseria meningiditis;
     pangenome_Ecoli.py -- this is similar to pangenome_SP.py, performing the same pipeline on genomes of Escherichia coli;
-    
     get_snps.py -- employs SNP-sites to compute the SNPs using the core gene alignments of each bacteria;
-
     get_mlst.py -- runs MLST on Prokka-annotated .fna files to get the sequence typing of  each genome;
-
     get_trees.py -- employs IQtree to compute the phylogenetic tree of each group of genomes; it outputs four ".treefile" files which can be firther used on iTOL website to visualize the phylogenetic trees;
-
     rgi_SP.py -- uses the RGI tool to compute the target variable (the resistance/susceptibility labels) for Streptococcus pneumoniae; it uses the protein sequences that were computed by Prokka (.faa files);
     rgi_SA.py -- similar to rgi_SP.py, computing the resistance labels of genomes of Streptococcus agalactie;
     rgi_NM.py --  similar to rgi_SP.py, computing the resistance labels of genomes of Neisseria meningiditis;
     rgi_Ecoli.py --  similar to rgi_SP.py, computing the resistance labels of genomes of Escherichia coli.
 
 For training the models, run the following Jupyter Notebooks:
+
     LG_SA.ipynb -- includes training, testing, and results visualizations of logistic regression on Streptococcus agalactiae;
     LG_SP.ipynb -- includes training, testing, and results visualizations of logistic regression on Streptococcus pneumoniae;
     LG_Ecoli.ipynb -- includes training, testing, and results visualizations of logistic regression on Escherichia coli;
@@ -73,10 +72,12 @@ For training the models, run the following Jupyter Notebooks:
     XGBoost_Ecoli.ipynb -- includes training, testing, and results visualizations of XGBoost on Escherichia coli;
 
 For visualizations, the following files can be run:
+
     visualization_gene_matrices.py -- creates a heatmap of the gene presence-absence matrix of each group of genomes, so it outputs four heatmaps
 
 
 For more support on running the the bioinformatics tools, check the following sources:
+
     Prokka -- https://github.com/tseemann/prokka 
     Panaroo -- https://gthlab.au/panaroo/#/
     SNP-sites -- https://sanger-pathogens.github.io/snp-sites/
