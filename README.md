@@ -26,6 +26,7 @@ To run this experiment, I recommend creating a new conda environment and install
 To avoid dependencies and compatibility issues, all bionformatics tools employed for this experiment were used through Docker images. Thus, to run this experiment, Docker needs to be installed beforehand. Important to note is that this experiment was conducted on a MacOS machine and the following intructions are not guaranteed to work well on other operating systems. In fact, it is strongly advised to not use a Windows machine in bioinformatics analyses, such as this one. 
 
 The following images are necessary to be pulled from Docker: 
+
     staphb/prokka
     staphb/panaroo
     staphb/snp-sites
