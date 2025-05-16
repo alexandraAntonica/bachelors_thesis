@@ -1,6 +1,6 @@
-Fighting the Resistance: Predicting Antibiotic Susceptibility in Meningitis-Causing Pathogens
+#Fighting the Resistance: Predicting Antibiotic Susceptibility in Meningitis-Causing Pathogens
 
-*Abstract*
+##Abstract
 
 Antimicrobial resistance (AMR) poses a significant global health threat, endangering
 millions worldwide. In response, machine learning (ML) algorithms have emerged as
@@ -19,7 +19,7 @@ potential of using ML approaches to enhance the accuracy and interpretability of
 otic resistance prediction, ultimately supporting improved clinical decision-making and
 antimicrobial stewardship.
 
-\*How to run the experiment\*
+##How to run the experiment
 
 To run this experiment, I recommend creating a new conda environment and install all the requirements using the requirements.txt file. 
 
