@@ -8,6 +8,9 @@ RAW_GENOMES_DIR = Path("/Users/alexandra/Desktop/thesis_programming/data/ncbi_ge
 PROKKA_OUTPUT_DIR = Path("/Users/alexandra/Desktop/thesis_programming/data/prokka_annotations_SA")
 PANAROO_INPUT_DIR = Path("/Users/alexandra/Desktop/thesis_programming/data/panaroo_input_SA")
 
+PANAROO_OUTPUT_DIR = Path("/Users/alexandra/Desktop/thesis_programming/data/panaroo_output_SA")
+PANAROO_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
 NUM_CPUS = "8"
 
 # organize files
@@ -78,7 +81,6 @@ def prepare_panaroo_input():
 
 # Panaroo
 def run_panaroo():
-
     """
     This function runs Panaroo on the .gff files. It uses Docker to run
     Panaroo in a containerized environment to avoid compatibility and dependencies issues.
@@ -87,8 +89,7 @@ def run_panaroo():
     print("\n[Panaroo] Running pangenome analysis with Docker...")
 
     PANAROO_IMAGE = "quay.io/biocontainers/panaroo:1.3.0--pyhdfd78af_0"
-    PANAROO_OUTPUT_DIR = Path("/Users/alexandra/Desktop/thesis_programming/data/panaroo_output_SA")
-    PANAROO_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    
 
     cmd = [
         "docker", "run", "--rm", "-it",
@@ -102,10 +103,29 @@ def run_panaroo():
 
     subprocess.run(cmd, check=True)
 
+def get_core_alignment():
+    """
+    Run panaroo-msa using Docker. This function generates a core alignment of the pangenome
+    using the core genome alignment method. It uses the output directory from the previous
+    Panaroo run as input.
+    """
+
+    cmd = [
+        "docker", "run", "--rm", "-it",
+        "-v", f"{PANAROO_OUTPUT_DIR}:/data",
+        "quay.io/biocontainers/panaroo:1.3.0--pyhdfd78af_0",
+        "bash", "-c",
+        f"panaroo-msa -o /data --aligner mafft --alignment core"
+    ]
+
+    print(f"[Panaroo-MSA] Running panaroo-msa on {PANAROO_OUTPUT_DIR}...")
+    subprocess.run(cmd, check=True)
+
 
 if __name__ == "__main__":
     collect_fna_files()
     run_prokka()
     prepare_panaroo_input()
     run_panaroo()
+    get_core_alignment()
     print("\n Pipeline complete!")

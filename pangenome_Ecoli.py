@@ -9,7 +9,10 @@ RAW_GENOMES_DIR = Path("/Users/alexandra/Desktop/thesis_programming/data/ncbi_ge
 PROKKA_OUTPUT_DIR = Path("/Users/alexandra/Desktop/thesis_programming/data/prokka_annotations_Ecoli")
 PANAROO_INPUT_DIR = Path("/Users/alexandra/Desktop/thesis_programming/data/panaroo_input_Ecoli")
 
-NUM_CPUS = "10"
+PANAROO_OUTPUT_DIR = Path("/Users/alexandra/Desktop/thesis_programming/data/panaroo_output_Ecoli")
+PANAROO_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+NUM_CPUS = "8"
 
 # organize files
 def collect_fna_files():
@@ -81,8 +84,7 @@ def run_panaroo():
     print("\n[Panaroo] Running pangenome analysis with Docker...")
 
     PANAROO_IMAGE = "quay.io/biocontainers/panaroo:1.3.0--pyhdfd78af_0"
-    PANAROO_OUTPUT_DIR = Path("/Users/alexandra/Desktop/thesis_programming/data/panaroo_output_Ecoli")
-    PANAROO_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    
 
     cmd = [
         "docker", "run", "--rm", "-it",
@@ -91,15 +93,34 @@ def run_panaroo():
         PANAROO_IMAGE,
         "bash", "-c",
         f"panaroo -i $(find /input -name '*.gff' | tr '\n' ' ') "
-        f"-o /output -t {NUM_CPUS} --clean-mode strict"
+        f"-o /output -t {NUM_CPUS} --clean-mode strict --merge_paralogs"
+
     ]
 
     subprocess.run(cmd, check=True)
 
+def get_core_alignment():
+    """
+    Run panaroo-msa using Docker. This function generates a core alignment of the pangenome
+    using the core genome alignment method. It uses the output directory from the previous
+    Panaroo run as input.
+    """
+
+    cmd = [
+        "docker", "run", "--rm", "-it",
+        "-v", f"{PANAROO_OUTPUT_DIR}:/data",
+        "quay.io/biocontainers/panaroo:1.3.0--pyhdfd78af_0",
+        "bash", "-c",
+        f"panaroo-msa -o /data --aligner mafft --alignment core"
+    ]
+
+    print(f"[Panaroo-MSA] Running panaroo-msa on {PANAROO_OUTPUT_DIR}...")
+    subprocess.run(cmd, check=True)
 
 if __name__ == "__main__":
     #collect_fna_files()
     #run_prokka()
     #prepare_panaroo_input()
-    run_panaroo()
+    #run_panaroo()
+    get_core_alignment()
     print("\n Pipeline complete!")
